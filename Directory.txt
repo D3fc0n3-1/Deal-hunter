@@ -1,0 +1,16 @@
+ai-shopping-assistant/
+├── platform_modules/
+│   ├── __init__.py
+│   ├── base_platform.py
+│   ├── ebay_module.py
+│   ├── amazon_module.py
+│   ├── walmart_module.py
+│   └── bestbuy_module.py
+├── main_shopper.py
+├── input_processor.py
+├── output_generator.py
+├── config_manager.py
+├── search_enhancer.py
+├── requirements.txt
+├── config.ini
+└── input.json

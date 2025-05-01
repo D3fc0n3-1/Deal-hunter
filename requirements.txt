@@ -1,0 +1,6 @@
+requests
+beautifulsoup4
+apscheduler
+thefuzz[speedup]
+# python-dotenv # Optional: If you use a .env file for API keys
+# ebay-sdk-python # Optional: If using the official eBay SDK
