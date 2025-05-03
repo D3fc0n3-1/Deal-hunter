@@ -1,0 +1,26 @@
+
+
+    Project Structure:
+        main_shopper.py: The main entry point. Initializes, loads modules, sets up the scheduler, and orchestrates the search cycles.
+        config_manager.py: Reads and provides access to settings from config.ini.
+        input_processor.py: Reads and validates the input.json file.
+        output_generator.py: Writes the final results to the output.json file.
+        search_enhancer.py: Contains utility functions, currently for fuzzy string matching (thefuzz) to help compare search terms and result titles (though not heavily used in the current scraping logic).
+        config.ini: User configuration file.
+        input.json: User input file defining items to search.
+        output.json: Output file where results are stored.
+        requirements.txt: Lists Python package dependencies.
+        platform_modules/: Directory containing the code for interacting with each specific shopping platform.
+            __init__.py: Makes the directory a Python package.
+            base_platform.py: Defines an abstract base class (interface) that all specific platform modules must follow. Includes common helper methods for making requests, parsing HTML, cleaning prices, etc.
+            ebay_module.py, amazon_module.py, etc.: Concrete implementations for each platform, inheriting from BasePlatform. These contain the platform-specific URLs, CSS selectors (for scraping), and logic to extract data and apply filters.
+
+    Updating Scrapers (If they break):
+        Identify which platform is failing (e.g., Walmart) from the log messages.
+        Go to that website (e.g., walmart.com) in your web browser.
+        Perform a search similar to one in your input.json.
+        Right-click on an element you want to extract (like a product title, price, or the container holding a single search result) and choose “Inspect” or “Inspect Element”. This opens the browser’s Developer Tools, showing the HTML code.
+        Carefully examine the HTML tags and their attributes (like class="..." or data-automation-id="..."). Find a reliable CSS selector that uniquely identifies that element or the group of results.
+        Open the corresponding Python file (e.g., platform_modules/walmart_module.py).
+        Update the _SELECTOR constants near the top of the file with the new selectors you found. For example, if the main container for each result item is now <div class="product-card">, you would update RESULT_ITEM_SELECTOR = "div.product-card".
+        Save the file and test the script again. This is often an iterative process.
