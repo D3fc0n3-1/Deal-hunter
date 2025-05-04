@@ -2,6 +2,8 @@ import logging
 import datetime
 import time
 import sys
+import config_manager as cfg
+import input_processor
 from importlib import import_module # To dynamically import platform modules
 
 from apscheduler.schedulers.blocking import BlockingScheduler
@@ -10,7 +12,8 @@ from apscheduler.triggers.interval import IntervalTrigger
 # Import core components
 import config_manager as cfg
 import input_processor
-import output_generator
+# import output_generator
+import database_manager
 from platform_modules.base_platform import BasePlatform # For type hinting/checking
 
 # --- Logging Setup ---
@@ -66,7 +69,7 @@ def load_platform_modules():
 
 # --- Main Search Cycle ---
 def run_search_cycle(platform_instances):
-    """Reads input, searches platforms, and writes output."""
+    """Reads input, searches platforms, and saves results to database."""
     start_time = time.time()
     log.info("Starting new search cycle...")
 
@@ -75,7 +78,7 @@ def run_search_cycle(platform_instances):
         return
 
     input_file = cfg.get_general_setting('input_file', 'input.json')
-    output_file = cfg.get_general_setting('output_file', 'output.json')
+    # output_file = cfg.get_general_setting('output_file', 'output.json')
 
     # 1. Read Input
     items_to_search = input_processor.read_input_file(input_file)
@@ -109,8 +112,9 @@ def run_search_cycle(platform_instances):
 
     # 3. Write Output
     log.info(f"Total results found across all platforms: {len(all_results)}")
-    log.info(f"Attempting to write output to: '{output_file}' (Type: {type(output_file)})") # DEBUG LINE
-    output_generator.write_output_file(output_file, all_results)
+    # log.info(f"Attempting to write output to: '{output_file}' (Type: {type(output_file)})") # DEBUG LINE
+    # output_generator.write_output_file(output_file, all_results)
+    database_manager.save_results(all_results)
 
     end_time = time.time()
     log.info(f"Search cycle finished in {end_time - start_time:.2f} seconds.")
@@ -123,6 +127,12 @@ if __name__ == "__main__":
     if cfg.config is None:
         log.critical("Configuration loading failed. Cannot continue.")
         sys.exit(1) # Exit if config is fundamentally broken
+
+    try:
+        database_manager.init_db()
+    except Exception as e: # Catch the re-raised exception
+        log.critical(f"Database initialization failed. Cannot continue. Error: {e}")
+        sys.exit(1) # Exit the script
 
     # Load platform modules based on config
     platform_instances = load_platform_modules()
