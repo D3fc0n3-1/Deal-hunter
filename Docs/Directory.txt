@@ -1,4 +1,4 @@
-ai-shopping-assistant/
+Deal-hunter/
 ├── platform_modules/
 │   ├── __init__.py
 │   ├── base_platform.py
