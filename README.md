@@ -34,12 +34,21 @@ The required Python libraries are listed in `requirements.txt`:
 
 1.  **Clone or Download:** Get the project files onto your local machine. If using Git:
     ```bash
+<<<<<<< HEAD
     git clone <repository_url>
     cd ai-shopping-assistant
     ```
     Otherwise, download and extract the files into a directory named `ai-shopping-assistant` and navigate into it using your terminal:
     ```bash
     cd /path/to/ai-shopping-assistant/
+=======
+    git clone https://github.com/D3fc0n3-1/Deal-hunter.git
+    cd Deal-hunter
+    ```
+    Otherwise, download and extract the files into a directory named `ai-shopping-assistant` and navigate into it using your terminal:
+    ```bash
+    cd /path/to/Deal-hunter/
+>>>>>>> b54d57997949fa9b11c5dab6a5defcdb36b8668f
     ```
 
 2.  **Install Dependencies:** Run the following command in your terminal within the project's root directory (`ai-shopping-assistant/`):
