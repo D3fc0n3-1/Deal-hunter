@@ -7,13 +7,29 @@ jobs:
       - image: cimg/python:3.8-node
     steps:
       - checkout
-      - python/install-packages
+      - run:
+          name: Set up virtual environment
+          command: python -m venv ~/.venv
+      - run:
+          name: Activate venv and upgrade pip
+          command: |
+            source ~/.venv/bin/activate
+            pip install --upgrade pip
+      - run:
+          name: Install dependencies
+          command: |
+            source ~/.venv/bin/activate
+            pip install -r requirements.txt
       - run:
           name: Install pytest
-          command: pip install pytest
+          command: |
+            source ~/.venv/bin/activate
+            pip install pytest
       - run:
           name: Run tests
-          command: pytest --junitxml=junit.xml || ((($? == 5)) && echo 'Did not find any tests to run.')
+          command: |
+            source ~/.venv/bin/activate
+            pytest --junitxml=junit.xml || ((($? == 5)) && echo 'Did not find any tests to run.')
       - store_test_results:
           path: junit.xml
   deploy:
